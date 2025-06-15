@@ -31,7 +31,7 @@ export function updateCache(app: App, tabLines: Lines) {
 }
 function rebuildCurrentPageCache(app: App, tabLines: Lines) {
 	const current_file = app.workspace.getActiveFile();
-	const pageCache = getPageCache(current_file);
+	const pageCache = getPageCache(app, current_file);
 	rebuildPageCache(pageCache, tabLines);
 	app.metadataCache.trigger("changed", current_file);
 	app.metadataCache.trigger("resolve", current_file);
@@ -72,7 +72,7 @@ function updateCacheLinks(metadataCache: MetadataCache, pageCache: CachedMetadat
 	metadataCache.unresolvedLinks[current_file.path] = pageUnresolvedLinks;
 }
 
-function getPageCache(current_file: TFile | null): CachedMetadata | null {
+function getPageCache(app: App, current_file: TFile | null): CachedMetadata | null {
 	if (!current_file) {
 		return null;
 	}

@@ -4,7 +4,7 @@ import { getTabExtSource, parseTabs } from './util/parsing';
 import { updateCache } from "./util/cache";
 import { render } from 'ui/rendering';
 import Alpine from 'alpinejs';
- 
+
 Alpine.prefix("data-x-")
 Alpine.start();
 
@@ -98,23 +98,23 @@ export default class HTMLTabsPlugin extends Plugin {
 	// 	await this.saveData(this.settings);
 	// }
 
-    /** Register a markdown codeblock post processor with the given priority. */
-    public registerCodeblockPostProcessorWithPriority(
-        language: string,
-        priority: number,
-        processor: (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => Promise<void>
-    ) {
-        const registered = this.registerMarkdownCodeBlockProcessor(language, processor);
-        registered.sortOrder = priority;
-    }
-
-	public async renderTabs(source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
-		const tabLines = getTabExtSource(el, ctx);
-		const tabs = parseTabs(tabLines);
-		updateCache(this.app, tabLines);
-		render(tabs, source, el, ctx);
+	/** Register a markdown codeblock post processor with the given priority. */
+	public registerCodeblockPostProcessorWithPriority(
+		language: string,
+		priority: number,
+		processor: (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => Promise<void>
+	) {
+		const registered = this.registerMarkdownCodeBlockProcessor(language, processor);
+		registered.sortOrder = priority;
 	}
 
+	public async renderTabs(source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext): Promise<void> {
+		const tabs = parseTabs(source);
+		render(tabs, source, el, ctx);
+
+		const tabLines = getTabExtSource(el, ctx);
+		updateCache(this.app, tabLines);
+	}
 }
 
 // class SampleModal extends Modal {

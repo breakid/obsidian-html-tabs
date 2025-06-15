@@ -10,8 +10,8 @@ export class Tabs {
 
     constructor() {
     }
-    
-    public hasTabs() : boolean {
+
+    public hasTabs(): boolean {
         return this.tabs.length > 0;
     }
 }

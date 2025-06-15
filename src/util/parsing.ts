@@ -31,19 +31,19 @@ export function getTabExtSource(el: HTMLElement, ctx: MarkdownPostProcessorConte
 	return lines;
 }
 
-export function parseTabs(lines: Lines): Tabs {
+export function parseTabs(source: string): Tabs {
 	const tabs: Tabs = new Tabs();
 	let newTab = null;
 	let id = 0;
 
-	for (const line of lines) {
-		if (line.text.startsWith("---tab")) {
+	for (const line of source.split("\n")) {
+		if (line.startsWith("---tab")) {
 			if (newTab) {
 				tabs.tabs.push(newTab);
 				newTab = null;
 			}
 
-			const match = line.text.match(/---tab(\*)? (.+)/);
+			const match = line.match(/---tab(\*)? (.+)/);
 			if (match) {
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				const [_, isStarred, label] = match;
@@ -59,9 +59,9 @@ export function parseTabs(lines: Lines): Tabs {
 			}
 		} else if (newTab) {
 			if (newTab.content === "") {
-				newTab.content += line.text;
+				newTab.content += line;
 			} else {
-				newTab.content += "\n" + line.text;
+				newTab.content += "\n" + line;
 			}
 		}
 	}
